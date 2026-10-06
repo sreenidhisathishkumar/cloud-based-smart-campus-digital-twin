@@ -1,0 +1,9 @@
+# CodePipeline is not created automatically.
+# Use this as a checklist when you connect GitHub → CodePipeline.
+
+# Source: GitHub (Campus_twin repo)
+# Build: AWS CodeBuild using ../buildspec.yml
+# Deploy: copy dist/ to the frontend S3 bucket, then invalidate CloudFront
+# Monitoring: send CodeBuild logs to CloudWatch
+
+status: not-configured

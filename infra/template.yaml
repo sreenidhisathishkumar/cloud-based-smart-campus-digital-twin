@@ -1,0 +1,63 @@
+# PLACEHOLDER — not deployed.
+# Fill parameters, then deploy with AWS SAM from a machine that has AWS credentials.
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Northridge Twin placeholder infrastructure (Sprint 5)
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: dev
+
+Resources:
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub northridge-twin-frontend-${EnvironmentName}
+
+  MediaBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub northridge-twin-media-${EnvironmentName}
+
+  BuildingsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub northridge-buildings-${EnvironmentName}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  IssuesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub northridge-issues-${EnvironmentName}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers.issues.get_issues
+      Runtime: python3.12
+      CodeUri: ../backend
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /issues
+            Method: get
+
+Outputs:
+  Note:
+    Description: Template only. Do not treat this as a live stack until sam deploy succeeds.
+    Value: not-deployed

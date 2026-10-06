@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22
+    commands:
+      - node -v
+      - npm -v
+  pre_build:
+    commands:
+      - npm ci
+  build:
+    commands:
+      - npm test
+      - npm run build
+artifacts:
+  files:
+    - "dist/**/*"
+    - "infra/**/*"
+    - "backend/**/*"
+  name: northridge-twin-build
